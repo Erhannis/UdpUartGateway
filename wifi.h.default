@@ -1,0 +1,6 @@
+const char* ssid = FIXME;
+const char* password = FIXME;
+// If these aren't the same, make sure to consider who's talking and who's listening where.
+// Note that, in my testing, the ESP32 does not hear its own broadcasts, so you won't get an echo.
+const unsigned int tx_port = 21146;
+const unsigned int rx_port = 21146;
