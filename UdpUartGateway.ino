@@ -93,8 +93,17 @@ void loop() {
 
   int i = 0;
   uint8_t buffer[1024];
-  while (COMMS.available() > 0) {
-    buffer[i++] = COMMS.read();
+  if (COMMS.available() > 0) {
+    unsigned long readStart = millis();
+    unsigned long lastRead = readStart;
+    unsigned long maxTime = 10; // If there's still COMMS available though it'll keep reading
+    unsigned long minSilence = 2;
+    while (((millis() - lastRead < minSilence) && (millis() - readStart < maxTime)) || COMMS.available() > 0) {
+      if (COMMS.available() > 0) {
+        buffer[i++] = COMMS.read();
+        lastRead = millis();
+      }
+    }
   }
   if (i > 0) {
     size_t c = udp.broadcastTo(buffer, i, tx_port);
